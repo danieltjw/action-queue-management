@@ -2,9 +2,9 @@
 
 ## Requirements Specification
 
-### 1. Overall Description
+## 1. Overall Description
 
-#### 1.1 Product Perspective
+### 1.1 Product Perspective
 
 This product primarily solves limitations with key(board) presses that are sent to a client application, with the overall aim to enhance the user experience through additional functionalities such as a comprehensive queue management and graphical overlay.
 
@@ -12,7 +12,7 @@ This program receives key presses from the user and processes it to determine wh
 
 It does this by having a model of how actions interact with other actions in the context of when those actions are invoked.
 
-#### 1.2 Product Functions
+### 1.2 Product Functions
 
 **Action Queue Management [AQM]:**
 
@@ -35,9 +35,9 @@ It does this by having a model of how actions interact with other actions in the
 
 ---
 
-### 2. External Interface Requirements
+## 2. External Interface Requirements
 
-#### 2.1 User Interfaces
+### 2.1 User Interfaces
 
 **Keyboard: User > Program**
 
@@ -51,14 +51,14 @@ GUI will indicate the time taken in real time for the completion of the current 
 
 The progress bar should be visually proportionate to the duration of the action to give users a better sense of when the action completes. (An action that takes 1 sec to complete should be 1/3 the visual length of an action that takes 3 secs to complete)
 
-#### 2.2 Hardware Interfaces
+### 2.2 Hardware Interfaces
 
 User interacts with the program though the use of key presses:
 
 - Single Key (pressing “1” for an action, "F12" to switch modes)
 - Combination key (pressing a modifier key “Shift” + “1” for another action)
 
-#### 2.3 Software Interfaces
+### 2.3 Software Interfaces
 
 **Client Application**
 
@@ -66,8 +66,55 @@ The program will dispatch actions on behalf of the user, through virtual key pre
 
 The use of virtual key presses introduces additional limitations such as the client application can not register combination key presses (“Shift” + “1”) simultaneously but will require a slight delay (~50ms) between those key presses. Various methods can be used to address this issue.
 
-#### 2.4 Communications Interfaces
+### 2.4 Communications Interfaces
 
 **Remote Server**
 
 As the client application ultimately forwards those key presses (virtual or otherwise) to a remote server, network latency will also be an important factor. The program’s action queue manager may need to add a short buffer between actions to ensure a previous action that arrived at the remote server slightly late, due to network latency, will not block the current action. This buffer should be configurable in the text(ini) config file.
+
+---
+
+## 3 System Features
+
+### 3.1 Queue Action
+
+#### 3.1.1 Description and Priority
+
+An action can be 1 of 2 types: (1) **Normal Action** (2) **Blocking Action**.
+
+**Type 1: Normal Action**
+
+- Integer: _rest_millisecond_
+
+**Type 2: Blocking Action**
+
+- Integer: _rest_millisecond_
+- Integer: _blocking_rest_millisecond_
+
+User initiates an action (next action) resulting in these possible outcomes:
+
+1. No previous action is in progress and next action is started immediately
+2. If next action is **Normal Action**, it will start after previous action's _rest_millisecond_
+3. If next action is **Blocking Action** it will only start after both
+   - previous **Blocking Action**'s _blocking_rest_millisecond_
+   - previous **Normal Action**'s _rest_millisecond_
+
+```
+For example:
+
+Blocking Action (rest_millisecond: 1000, blocking_rest_millisecond: 3000)
+Normal Action (rest_millisecond: 1000)
+
+This blocking action will prevent another blocking action from starting for 3 secs but will allow 2 normal actions to be performed before the next blocking action.
+
+Time elapsed:
+
+0_________1_________2_________3_________4
+ Blocking                      Blocking
+
+0_________1_________2_________3_________4
+ Blocking  Normal              Blocking
+
+0_________1_________2_________3_________4
+ Blocking  Normal    Normal    Blocking
+```
