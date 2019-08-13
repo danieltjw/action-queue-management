@@ -78,8 +78,6 @@ As the client application ultimately forwards those key presses (virtual or othe
 
 ### 3.1 Queue Action
 
-#### 3.1.1 Description and Priority
-
 An action can be 1 of 2 types: (1) **Normal Action** (2) **Blocking Action**.
 
 **Type 1: Normal Action**
@@ -105,8 +103,6 @@ For example:
 Blocking Action (rest_millisecond: 1000, blocking_rest_millisecond: 3000)
 Normal Action (rest_millisecond: 1000)
 
-This blocking action will prevent another blocking action from starting for 3 secs but will allow 2 normal actions to be performed before the next blocking action.
-
 Time elapsed:
 
 0_________1_________2_________3_________4
@@ -117,4 +113,7 @@ Time elapsed:
 
 0_________1_________2_________3_________4
  Blocking  Normal    Normal    Blocking
+
+This blocking action will prevent another blocking action from starting for 3 secs,
+but will allow 2 normal actions to be performed before the next blocking action.
 ```
