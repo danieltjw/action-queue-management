@@ -6,13 +6,11 @@
 
 #### 1.1 Product Perspective
 
-This product solves limitations with key(board) presses that are sent to a client application.
+This product primarily solves limitations with key(board) presses that are sent to a client application, with the overall aim to enhance the user experience through additional functionalities such as a comprehensive queue management and graphical overlay.
 
 This program receives key presses from the user and processes it to determine which actions, and when they, should be sent to the client applications.
 
 It does this by having a model of how actions interact with other actions in the context of when those actions are invoked.
-
-With the aim of improve the user experience of using the client application.
 
 #### 1.2 Product Functions
 
