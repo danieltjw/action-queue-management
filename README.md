@@ -189,12 +189,18 @@ REQ-1: The Action Queue Manager has to keep track of effects, their duration and
 
 ### 3.8 Meta Action
 
-Actions might in some cases also affect the Action Queue Manager (AQM) behavior itself.
+Actions might in some cases also affect the Action Queue Manager's (AQM) behavior itself.
 
-- Resetting the Action Queue (clearing the Queue)
+- Reset the Action Queue (clear the Queue of all actions)
 
-- Pausing the Action Queue (temporarily stop all queued actions but allow new action through)
+- Pause the Action Queue (temporarily stop all queued actions but allow new actions through)
 
-- Switching AQM Modes
+- Switch AQM Application (changes how the AQM maps key presses to actions)
+
+- Switch AQM Mode (changes how the AQM processes actions on the queue)
+  - LIFO (default: Last In, First Out)
+  - FIFO (First In, First Out)
+  - Prefer responsiveness (actions are preformed according to queue order)
+  - Prefer throughput (non-blocking actions may be delayed if throughput can be increased)
 
 REQ-1: The AQM will be able to modify its behavior / logic when Meta Actions are performed
