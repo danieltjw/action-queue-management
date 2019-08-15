@@ -16,22 +16,19 @@ It does this by having a model of how actions interact with other actions in the
 
 **Action Queue Management [AQM]:**
 
-1. Queue actions (key presses)
-2. Loop action (indefinitely until either (a) interrupted (b) paused or (b) stopped by another action)
-3. Chain action (principal action adds a sequence of actions to the queue, loop-able)
-4. Substitute action (principal action chooses from a list of appropriate substitute action)
-5. Queue interruption (new action interrupt or pause the queue and then resume seamlessly)
-6. Action frequency limit (ignoring action if used too recently)
-7. Action behavior modification (action can affect subsequent action’s behavior)
+1. Queue Action (key presses)
+2. Loop Action (indefinitely until either (a) interrupted (b) paused or (b) stopped by another action)
+3. Chain Action (principal action adds a sequence of actions to the queue, loop-able)
+4. Substitute Action (principal action chooses from a list of appropriate substitute action)
+5. Action Prerequisites
+6. Action Resources
+7. Action Effects
+8. Meta Action
 
 **Graphical User Interface [GUI]:**
 
 1. Progress bar (visual feedback proportional to the duration of the current action)
 2. Queued actions display
-
-**Program Configuration [PC]:**
-
-1. Mode switching (changes the context of the AQM and key presses)
 
 ---
 
@@ -117,3 +114,87 @@ Time elapsed:
 This blocking action will prevent another blocking action from starting for 3 secs,
 but will allow 2 normal actions to be performed before the next blocking action.
 ```
+
+REQ-1: Queued Actions are started at the appropriate time based on properties of previous actions
+
+REQ-2: New actions are added to the queue (LIFO by default) in real time
+
+### 3.2 Loop Action
+
+**Loop Actions** allow for an action to be repeated indefinitely with a single key press.
+
+**Loop Actions** interact with other actions in 3 ways:
+
+1. No previous **Loop Action** is in effect, **Loop Action** will continuously trigger when there are no pending actions
+2. **Loop Action** itself is in effect, current **Loop Action** will stop (toggle on / off)
+3. Another **Loop Action** is in effect, current **Loop Action** will stop and the new **Loop Action** will start when appropriate
+
+REQ-1: Loop Actions are started at the appropriate time and continue indefinitely
+
+REQ-2: Loop Actions are interrupted or paused by new actions and resume seamlessly afterwards
+
+REQ-3: Loop Actions are toggled off when users use the same key press
+
+REQ-4: Loop Actions can be replaced by another Loop Action
+
+### 3.3 Chain Action
+
+**Chain Action** create a sequence of actions to be performed. While those actions can be started separately if needed, grouping them into a **Chain Action** can reduce the number of key presses.
+
+REQ-1: Chain Actions add a sequence of actions to the queue (this decomposition only happens at the point the Chain Action is started and not while it is in queue)
+
+REQ-2: Chain Actions can be looped
+
+### 3.4 Substitute Action
+
+**Substitute Action** allows a single key press to choose an action from a group of possible actions. This allows for the user to logically group separate actions that perform a similar function together.
+
+REQ-1: Substitute Actions chooses an appropriate action from a list of possible actions
+
+### 3.5 Action Prerequisite
+
+Actions will only be performed if prerequisites are met. All Actions, and Substitute Action in particular, will use these prerequisites to evaluate which action to choose.
+
+**Implicit prerequisites:**
+
+Before the next action in the queue is started, the Action Queue will rest for _rest_millisecond_ (and _blocking_rest_millisecond_ if applicable).
+
+**Explicit prerequisites:**
+
+- Action may only be reused after some time have passed
+- Action may require a certain number of resources to use
+- Action may only be used within a specified duration of another action
+
+These prerequisites may be combined in complex ways. For example, an Action {B} can only be used for 20s after Action {A} has been used. Action {B} will require 1 resource to use. Action {b} can only be used once every 5s.
+
+REQ-1: Actions need to check if all prerequisites are
+
+### 3.6 Action Resources
+
+Resources can be created by:
+
+- An action
+- Automatically after some time has passed
+
+REQ-1: The Action Queue Manager has to keep track of available resources
+
+### 3.7 Action Effects
+
+Action can change the implicit or explicit prerequisites of the next suitable action(s) for a:
+
+- duration of time
+- number of times
+
+REQ-1: The Action Queue Manager has to keep track of effects, their duration and number of uses
+
+### 3.8 Meta Action
+
+Actions might in some cases also affect the Action Queue Manager (AQM) behavior itself.
+
+- Resetting the Action Queue (clearing the Queue)
+
+- Pausing the Action Queue (temporarily stop all queued actions but allow new action through)
+
+- Switching AQM Modes
+
+REQ-1: The AQM will be able to modify its behavior / logic when Meta Actions are performed
