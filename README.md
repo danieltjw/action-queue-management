@@ -61,6 +61,10 @@ User interacts with the program though the use of key presses:
 
 The program will dispatch actions on behalf of the user, through virtual key presses, to the client application.
 
+The user's key presses should not interfere with the virtual key presses sent by the program. For example, if the user holds down the "Shift" key when the program sends a virtual key press of "1", the client application should register "1" and not a combination of "Shift" + "1".
+
+The program should be able to simultaneously receive key presses from the user and dispatch actions from the Action Queue Manager to the client application at all times.
+
 The use of virtual key presses introduces additional limitations such as the client application can not register combination key presses (“Shift” + “1”) simultaneously but will require a slight delay (~50ms) between those key presses. Various methods can be used to address this issue.
 
 ### 2.4 Communications Interfaces
