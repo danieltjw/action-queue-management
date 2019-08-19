@@ -6,9 +6,9 @@
 
 ### 1.1 Product Perspective
 
-This product primarily solves limitations with key(board) presses that are sent to a client application, with the overall aim to enhance the user experience through additional functionalities such as a comprehensive queue management and graphical overlay.
+This product primarily solves limitations with key(board) and mouse inputs that are sent to a client application, with the overall aim to enhance the user experience through additional functionalities such as a comprehensive queue management and graphical overlay.
 
-This program receives key presses from the user and processes it to determine which actions, and when they, should be sent to the client applications.
+This program receives key presses and mouse inputs from the user and processes it to determine which actions, and when they, should be sent to the client applications.
 
 It does this by having a model of how actions interact with other actions in the context of when those actions are invoked.
 
@@ -36,9 +36,9 @@ It does this by having a model of how actions interact with other actions in the
 
 ### 2.1 User Interfaces
 
-**Keyboard: User > Program**
+**Keyboard & Mouse: User > Program**
 
-User interacts with the program mainly through key(board) presses to (a) issue Actions and (b) switch Modes. Advanced configurations can be changed in a text(ini) file.
+User interacts with the program through key(board) presses and mouse inputs to (a) issue Actions and (b) switch Modes. Advanced configurations can be changed in a text(ini) file.
 
 **GUI: User < Program**
 
@@ -50,20 +50,21 @@ The progress bar should be visually proportionate to the duration of the action 
 
 ### 2.2 Hardware Interfaces
 
-User interacts with the program though the use of key presses:
+User interacts with the program though the use of key presses and mouse inputs:
 
 - Single Key (pressing “1” for an action, "F12" to switch modes)
 - Combination key (pressing a modifier key “Shift” + “1” for another action)
+- Mouse inputs provide additional context that may modify actions
 
 ### 2.3 Software Interfaces
 
 **Client Application**
 
-The program will dispatch actions on behalf of the user, through virtual key presses, to the client application.
+The program will dispatch actions on behalf of the user, through virtual key presses and mouse clicks, to the client application.
 
-The user's key presses should not interfere with the virtual key presses sent by the program. For example, if the user holds down the "Shift" key when the program sends a virtual key press of "1", the client application should register "1" and not a combination of "Shift" + "1".
+The user's key presses and mouse inputs should not interfere with the virtual key presses and mouse clicks sent by the program. For example, if the user holds down the "Shift" key when the program sends a virtual key press of "1", the client application should register "1" and not a combination of "Shift" + "1".
 
-The program should be able to simultaneously receive key presses from the user and dispatch actions from the Action Queue Manager to the client application at all times.
+The program should be able to simultaneously receive key presses and mouse inputs from the user and dispatch actions from the Action Queue Manager to the client application at all times.
 
 The use of virtual key presses introduces additional limitations such as the client application can not register combination key presses (“Shift” + “1”) simultaneously but will require a slight delay (~50ms) between those key presses. Various methods can be used to address this issue.
 
