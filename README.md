@@ -136,7 +136,7 @@ REQ-2: New actions are added to the queue (LIFO by default) in real time
 
 REQ-1: Loop Actions are started at the appropriate time and continue indefinitely
 
-REQ-2: Loop Actions are interrupted or paused by new actions and resume seamlessly afterwards
+REQ-2: Loop Actions can be interrupted or paused by new actions and resume seamlessly afterwards
 
 REQ-3: Loop Actions are toggled off when users use the same key press
 
@@ -155,6 +155,8 @@ REQ-2: Chain Actions can be looped
 **Substitute Action** allows a single key press to choose an action from a group of possible actions. This allows for the user to logically group separate actions that perform a similar function together.
 
 REQ-1: Substitute Actions chooses an appropriate action from a list of possible actions
+
+REQ-2: Substitute Actions can be looped
 
 ### 3.5 Action Prerequisite
 
