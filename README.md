@@ -211,3 +211,19 @@ Actions might in some cases also affect the Action Queue Manager's (AQM) behavio
   - Prefer throughput (non-blocking actions may be delayed if throughput can be increased)
 
 REQ-1: The AQM will be able to modify its behavior / logic when Meta Actions are performed
+
+## 4 Other Nonfunctional Requirements
+
+### 4.1 Performance Requirements
+
+1. Register new actions: < 2 ms (99% of the time)
+
+The Queue Manager should register new actions inputs from the User within 2ms, 99% of the time. The default time resolution of 15.6 ms can be improved through the use of the hardware counter but at the cost of higher CPU usage.
+
+2. Dispatch actions: < 0.1 ms
+
+The Queue Manager action dispatch timer should have a resolution of under 0.1 ms. This will help avoid performance loss over time.
+
+3. CPU usage: < 1 %
+
+The program should use under 1 % of a typical CPU. High resolution time keeping needs to be balanced with its high CPU cost.
